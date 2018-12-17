@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 export default class Stars extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {

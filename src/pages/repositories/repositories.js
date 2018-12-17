@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 export default class Repositories extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {

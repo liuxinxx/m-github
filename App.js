@@ -1,95 +1,30 @@
 import React, { Component } from "react";
-import { Scene, Router } from "react-native-router-flux";
-import { View, Text } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import News from "./src/pages/news/news";
-import Profile from "./src/pages/profile/profile";
-import Stars from "./src/pages/stars/stars";
-import Repositories from "./src/pages/repositories/repositories";
+import { StatusBar } from "react-native";
+import { createAppContainer,createStackNavigator } from "react-navigation";
+import Global from './src/libs/Global'
+import Login from "./src/pages/profile/login";
+import TabNavigation from "./src/libs/TabNavigation";
 
-import Search from "./src/pages/search/search";
+type Props = {};
 
-class TabIcon extends React.Component {
+export default class App extends Component<Props> {
   render() {
-    return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <Ionicons
-          style={{ color: this.props.focused ? "#3366ff" : "#999" }}
-          name={this.props.iconName}
-          size={25}
-        />
-      </View>
-    );
+    return <AppContainer />;
   }
 }
 
-class App extends React.Component {
-  render() {
-    return (
-      <Router sceneStyle={{ backgroundColor: "white" }}>
-        <Scene
-          key="Tabbar"
-          tabs
-          headerMode="screen"
-          hideNavBar={true}
-          abBarPosition={"bottom"}
-          default="News"
-          showLabel={false}
-          inactiveBackgroundColor="rgba(255, 255, 255, 0.5)"
-        >
-          <Scene
-            title={"Repositories"}
-            key="Repositories"
-            component={Repositories}
-            icon={TabIcon}
-            hideNavBar
-            iconName={"ios-flame"}
-          />
-          <Scene
-            title={"News"}
-            key="News"
-            component={News}
-            icon={TabIcon}
-            hideNavBar
-            iconName={"ios-paper"}
-            component={News}
-          />
 
-          <Scene
-            title={"Stars"}
-            key="Stars"
-            component={Stars}
-            icon={TabIcon}
-            hideNavBar
-            iconName={"ios-star"}
-          />
-          <Scene
-            key={"Search"}
-            title={"Search"}
-            icon={TabIcon}
-            iconName={"ios-search"}
-            hideNavBar
-            component={Search}
-          />
-          <Scene
-            title={"Profile"}
-            component={Profile}
-            icon={TabIcon}
-            hideNavBar
-            iconName={"logo-github"}
-            initial //第一次加载的页面
-          />
-        </Scene>
-      </Router>
-    );
+const HomeStack = createStackNavigator(
+  {
+    TabNavigation: { screen: TabNavigation },
+    Login: { screen: Login }
+  },
+  {
+    initialRouteName: "TabNavigation",
+    initialRouteParams: { initPara: "初始页面参数" },
+    headerMode: "float",
+    cardStyle: { backgroundColor: "#efefef" }
   }
-}
-
-export default App;
+);
+Global.globalStorage();
+const AppContainer = createAppContainer(HomeStack);
