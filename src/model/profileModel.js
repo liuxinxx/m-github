@@ -1,5 +1,6 @@
 import Request from "../libs/Request";
 import Api from "../libs/Api";
+import Global from "../libs/Global"
 export default class profileModel {
   // 获取message数据,带缓存策略
   static login = code => {
@@ -22,14 +23,20 @@ export default class profileModel {
 
   static getUserInfo = accrssToken => {
     return new Promise((resolve, reject) => {
-      Request.get({ url: Api.userInfo, data: { access_token: accrssToken } })
+      Request.get({ url: Api.userInfo, data: { access_token: accrssToken,scope:"user,repo,gist,admin:repo_hook" } })
         .then(data => {
           // 登录并保存登录信息
           globalStorage.save({
             key: "userInfo",
             data: data,
-            expires: 1000 * 3600 //一个小时
+            expires: 1000 * 3600 * 24 * 365 //一年
           });
+          globalStorage.save({
+            key: "accrssToken",
+            data: {"access_token":accrssToken},
+            expires: 1000 * 3600 * 24 * 365 //一年
+          });
+          Global.globalAccessToken(accrssToken)
           resolve(data);
         })
         .catch(error => {
