@@ -23,7 +23,7 @@ export default class profileModel {
 
   static getUserInfo = accrssToken => {
     return new Promise((resolve, reject) => {
-      Request.get({ url: Api.userInfo, data: { access_token: accrssToken,scope:"user,repo,gist,admin:repo_hook" } })
+      Request.get({ url: Api.userInfo, data: { access_token: accrssToken } })
         .then(data => {
           // 登录并保存登录信息
           globalStorage.save({
