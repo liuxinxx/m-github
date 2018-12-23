@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image,TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Button, List, Modal,Toast } from "antd-mobile-rn";
+import FontAwesomeIcons from "react-native-vector-icons/FontAwesome";
+import { Button, List, Modal,Toast, Icon } from "antd-mobile-rn";
 import profileModel from "../../model/profileModel";
 import DateUtil from "../../libs/DateUtil";
 export default class Profile extends Component {
@@ -29,7 +30,7 @@ export default class Profile extends Component {
   }
 
   returnData(code) {
-    Toast.loading('正在登陆！')
+    Toast.loading('正在登陆')
     this.login(code);
   }
   login(code) {
@@ -37,8 +38,6 @@ export default class Profile extends Component {
     profileModel
       .login(code)
       .then(ret => {
-        console.log("success");
-        console.log(ret);
         profileModel
           .getUserInfo(ret["access_token"])
           .then(ret => {
@@ -122,18 +121,6 @@ export default class Profile extends Component {
         <ScrollView style={{ flex: 1 }}>
           {/* 登录 */}
           <View style={styles.login}>
-            {/* <Button 
-            type="warning"
-            onClick={()=>{
-              globalStorage.clearMapForKey('userInfo');
-              this.setState({
-                login:false,
-                loginInfo:{}
-              })
-            }}
-          >
-            退出
-          </Button> */}
             {loginState ? (
               // 登录成功
               <View
@@ -146,6 +133,14 @@ export default class Profile extends Component {
                   borderBottomColor: "#eee",
                   paddingLeft: 10,
                   paddingRight: 30
+                }}
+              >
+              <TouchableOpacity
+              style={{flex:1,flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",}}
+                onPress={()=>{
+                  this.props.navigation.navigate("UserInfo", { title: this.state.loginInfo.username });
                 }}
               >
                 <Image
@@ -182,6 +177,12 @@ export default class Profile extends Component {
                     Joined on {this.state.loginInfo.joinDate}
                   </Text>
                 </View>
+                <View style={{flex:1}}/>
+                <FontAwesomeIcons
+                  name="angle-right" 
+                  size={30}
+                />
+                </TouchableOpacity>
               </View>
             ) : (
               // 未登录
@@ -205,7 +206,7 @@ export default class Profile extends Component {
                 <Button
                   style={{
                     backgroundColor: "#36f",
-                    width: 100,
+                    width: 80,
                     height: 40,
                     borderRadius: 40
                   }}
@@ -250,6 +251,7 @@ export default class Profile extends Component {
           </View>
 
           {/* 中部列表 */}
+          {loginState &&
           <View style={styles.centralList}>
             <ScrollView>
               <List>
@@ -268,7 +270,7 @@ export default class Profile extends Component {
               </List>
             </ScrollView>
           </View>
-
+          }
           {/* 底部列表 */}
           <View style={styles.bottomList}>
             <ScrollView>

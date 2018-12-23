@@ -20,7 +20,7 @@ export default class Login extends Component {
   //渲染
   render() {
     let url =
-      "https://github.com/login/oauth/authorize?client_id=8042b87ac34d27d5b700";
+      "https://github.com/login/oauth/authorize?client_id=8042b87ac34d27d5b700&scope=user";
     return (
       <View style={styles.container}>
         <WebView
@@ -51,7 +51,6 @@ export default class Login extends Component {
 //样式定义
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 20
+    flex: 1
   }
 });
